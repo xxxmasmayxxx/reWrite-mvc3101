@@ -1,5 +1,7 @@
 <?php
 
+define('VIEW_DIR', 'View');
+
 spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом и неймспейс совпадают
    {
     require $className . '.php';
@@ -15,14 +17,14 @@ $action .= 'Action';        // экшена  -||-
 
 if (!file_exists($controller . '.php'))     // проверка на существование файла + расширение
 {
-    exit("{$controller} not found");
+    exit("{$controller} -  not found");
 }
 
 $controller = new $controller();
 
 if (!method_exists($controller, $action))        // -||- метода
 {
-    exit("{$action} not found");
+    exit("{$action} -  not found");
 }
 
 $content = $controller->$action();      // переменная для сбора и передачи контента
