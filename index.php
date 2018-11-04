@@ -1,8 +1,7 @@
-<?php //todo: положить все в гит "rewrite mvc3101"
+<?php
 
 spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом и неймспейс совпадают
-{
-//    $className = str_replace('//', DIRECTORY_SEPARATOR, $className);
+   {
     require $className . '.php';
    });
 
@@ -26,7 +25,7 @@ if (!method_exists($controller, $action))        // -||- метода
     exit("{$action} not found");
 }
 
-$content = $controller->$action();      // переменная для передачи контента
+$content = $controller->$action();      // переменная для сбора и передачи контента
 
 
 
