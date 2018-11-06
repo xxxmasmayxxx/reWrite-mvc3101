@@ -6,7 +6,7 @@ namespace Framework;
 
 class Controller
 {
-    protected function render($view)
+    protected function render($view, array $assoc = [])
     {
         $class = get_class($this);  // узнаем класс с неймспейсом
         $folderClass = strtolower(str_replace(['Controller', '\\'], '', $class)); // убираем неймспейс и понижаем
@@ -18,6 +18,8 @@ class Controller
         {
             die("{$path} - Path to view file not correct");
         }
+
+        $vars = extract($assoc);
 
         ob_start();     // буферизация без которой require вылезет в верху layout
 

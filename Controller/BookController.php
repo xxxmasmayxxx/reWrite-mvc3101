@@ -8,6 +8,9 @@ class BookController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('index.phtml');
+        return $this->render('index.phtml', [
+            'books' => [1, 2, 3],
+            'authors' => 'adcsa dfwrwedqs'
+        ]);
         }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Model\Request;
+
 define('VIEW_DIR', 'View');
 
 spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом и неймспейс совпадают
@@ -7,7 +9,7 @@ spl_autoload_register(function ($className)     //автолоадинг раб�
     require $className . '.php';
    });
 
-$request = new Model\Request($_GET, $_POST);    // отсыл суп.глоб.масс. в private св-ва и обработка if null
+$request = new Request($_GET, $_POST);    // отсыл суп.глоб.масс. в private св-ва и обработка if null
 
 $controller = $request->get('controller', 'default');   // get from private + default if null
 $action = $request->get('action', 'index');     // -||-
@@ -31,4 +33,4 @@ $content = $controller->$action();      // переменная для сбор�
 
 
 
-require 'View/layout.phtml';        // выкладываем все в вьюшку
+require VIEW_DIR . DIRECTORY_SEPARATOR . 'layout.phtml';        // выкладываем все в вьюшку
