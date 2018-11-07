@@ -1,6 +1,9 @@
 <?php
 
-use Model\Request;
+use Framework\Request;
+use Controller\ExeptionController;
+use Framework\Controller;
+
 
 define('VIEW_DIR', 'View');
 
@@ -17,19 +20,26 @@ $action = $request->get('action', 'index');     // -||-
 $controller = 'Controller\\' . ucfirst($controller . 'Controller');     // изменяем назв. контроллера на имя файла
 $action .= 'Action';        // экшена  -||-
 
-if (!file_exists($controller . '.php'))     // проверка на существование файла + расширение
-{
-    exit("{$controller} -  not found");
-}
+try {
+    if (!file_exists($controller . '.php'))     // проверка на существование файла + расширение
+    {
+        throw new \Exception("{$controller} -  not found");
+    }
 
-$controller = new $controller();
+    $controller = new $controller();
 
-if (!method_exists($controller, $action))        // -||- метода
-{
-    exit("{$action} -  not found");
-}
+    if (!method_exists($controller, $action))        // -||- метода
+    {
+        throw new \Exception("{$action} -  not found");
+    }
 
-$content = $controller->$action();      // переменная для сбора и передачи контента
+    $content = $controller->$action();      // переменная для сбора и передачи контента
+
+} catch (\Exception $e){
+
+            $ec = new ExeptionController();
+            $content = $ec->errorAction($e);
+    }
 
 
 

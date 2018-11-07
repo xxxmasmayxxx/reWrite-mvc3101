@@ -16,7 +16,7 @@ class Controller
 
         if (!file_exists($path))        // проверка на существование вьюшки
         {
-            die("{$path} - Path to view file not correct");
+            throw new \Exception("{$path} - Path to view file not correct");
         }
 
         $vars = extract($assoc);
