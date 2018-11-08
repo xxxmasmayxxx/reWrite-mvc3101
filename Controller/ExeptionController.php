@@ -3,7 +3,6 @@
 
 namespace Controller;
 
-
 use Framework\Controller;
 
 class ExeptionController extends Controller

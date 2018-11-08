@@ -33,7 +33,7 @@ try {
         throw new \Exception("{$action} -  not found");
     }
 
-    $content = $controller->$action();      // переменная для сбора и передачи контента
+    $content = $controller->$action($request);      // переменная для сбора и передачи контента
 
 } catch (\Exception $e){
 
