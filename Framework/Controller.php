@@ -7,10 +7,18 @@ namespace Framework;
 class Controller
 {
 protected $router;
+protected $pdo;
 
-    public function setRouter($router)
+    public function setRouter(Router $router)
     {
         $this->router = $router;
+
+        return $this;
+}
+
+    public function setPdo(\PDO $pdo)
+    {
+        $this->pdo = $pdo;
 
         return $this;
 }

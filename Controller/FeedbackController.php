@@ -16,17 +16,16 @@ class FeedbackController extends Controller
                                         $request->post('email'),
                                         $request->post('message')
                                        );
-
         if ($request->isPost())
         {
             if ($form->isValid())
             {
-
+//                $this->pdo
 
                 $this->router->redirect('/1');
             }
         }
-//        var_dump($form);
+
         return $this->render('contact.phtml', ['form' => $form]);
     }
 }

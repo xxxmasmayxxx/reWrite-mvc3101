@@ -4,8 +4,20 @@ use Framework\Request;
 use Controller\ExeptionController;
 use Framework\Router;
 
-
+define('DS', DIRECTORY_SEPARATOR);
 define('VIEW_DIR', 'View');
+
+$PDOPASS = "PdoPass.php";   // имя файла с альтер настройками подключения к базе данных PDO
+
+if (file_exists($PDOPASS))      // если есть сторонний файл с настройками подключения к базе данных то используется он
+{                               // а если его нет то настройки устанавливаются здесь
+    include_once $PDOPASS;
+
+}else{
+        $DSN = 'mysql:host=127.0.0.1;dbname=mvc1';
+        $USER = 'root';
+        $PASSWORD = null;
+}
 
 spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом
                                                                                     // и неймспейс совпадают
@@ -18,6 +30,8 @@ $router = new Router(); // создание роутера для использ
                             // (request и router) пробрасываются в классы разными способами, request через св-ва
                             // функции а router через родительский класс но в родительский подается тоже через св-во
                             // функции. Это dependency injection pattern.
+
+$pdo = new \PDO($DSN, $USER, $PASSWORD);
 
 $controller = $request->get('controller', 'default');   // get from private + default if null
 $action = $request->get('action', 'index');     // -||-
@@ -32,7 +46,9 @@ try {
     }
 
     $controller = (new $controller())        //
-                    ->setRouter($router);
+                    ->setRouter($router)
+                    ->setPdo($pdo)
+    ;
 
     if (!method_exists($controller, $action))        // -||- метода
     {
@@ -49,4 +65,4 @@ try {
 
 
 
-require VIEW_DIR . DIRECTORY_SEPARATOR . 'layout.phtml';        // выкладываем все в вьюшку
+require VIEW_DIR . DS . 'layout.phtml';        // выкладываем все в вьюшку
