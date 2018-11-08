@@ -2,17 +2,22 @@
 
 use Framework\Request;
 use Controller\ExeptionController;
-use Framework\Controller;
+use Framework\Router;
 
 
 define('VIEW_DIR', 'View');
 
-spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом и неймспейс совпадают
+spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом
+                                                                                    // и неймспейс совпадают
    {
     require $className . '.php';
    });
 
 $request = new Request($_GET, $_POST);    // отсыл суп.глоб.масс. в private св-ва и обработка if null
+$router = new Router(); // создание роутера для использования переадресации в классах
+                            // (request и router) пробрасываются в классы разными способами, request через св-ва
+                            // функции а router через родительский класс но в родительский подается тоже через св-во
+                            // функции. Это dependency injection pattern.
 
 $controller = $request->get('controller', 'default');   // get from private + default if null
 $action = $request->get('action', 'index');     // -||-
@@ -26,7 +31,8 @@ try {
         throw new \Exception("{$controller} -  not found");
     }
 
-    $controller = new $controller();
+    $controller = (new $controller())        //
+                    ->setRouter($router);
 
     if (!method_exists($controller, $action))        // -||- метода
     {

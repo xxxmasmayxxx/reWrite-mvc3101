@@ -22,4 +22,9 @@ class Request
             {
                 return $this->post[$key] ?? $default;
             }
+
+    public function isPost()
+    {
+        return (bool) $this->post;
+        }
 }

@@ -6,6 +6,15 @@ namespace Framework;
 
 class Controller
 {
+protected $router;
+
+    public function setRouter($router)
+    {
+        $this->router = $router;
+
+        return $this;
+}
+
     protected function render($view, array $assoc = [])
     {
         $class = get_class($this);  // узнаем класс с неймспейсом

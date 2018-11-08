@@ -12,11 +12,21 @@ class FeedbackController extends Controller
     public function contactAction(Request $request)
     {
 
-        $form = new FeedbackController( $request->post('name'),
+        $form = new FeedbackForm( $request->post('name'),
                                         $request->post('email'),
                                         $request->post('message')
                                        );
 
-        return $this->render('contact.phtml');
+        if ($request->isPost())
+        {
+            if ($form->isValid())
+            {
+
+
+                $this->router->redirect('/1');
+            }
+        }
+//        var_dump($form);
+        return $this->render('contact.phtml', ['form' => $form]);
     }
 }
