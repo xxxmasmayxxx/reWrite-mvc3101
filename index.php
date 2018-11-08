@@ -33,6 +33,14 @@ $router = new Router(); // создание роутера для использ
 
 $pdo = new \PDO($DSN, $USER, $PASSWORD);
 
+
+
+\Framework\Registry::set('router', $router);
+\Framework\Registry::set('pdo', $pdo);
+
+
+
+
 $controller = $request->get('controller', 'default');   // get from private + default if null
 $action = $request->get('action', 'index');     // -||-
 
