@@ -4,10 +4,15 @@
 namespace Framework;
 
 
+use Model\Repository\FeedbackRepository;
+
 class Controller
 {
 protected $router;
+
 protected $pdo;
+
+protected $feedbackRepository;
 
     public function setRouter(Router $router)
     {
@@ -22,6 +27,12 @@ protected $pdo;
 
         return $this;
 }
+    public function setFeedbackRepository(FeedbackRepository $feedbackRepository)
+    {
+        $this->feedbackRepository = $feedbackRepository;
+
+        return $this;
+    }
 
     protected function render($view, array $assoc = [])
     {

@@ -3,27 +3,28 @@
 use Framework\Request;
 use Controller\ExeptionController;
 use Framework\Router;
+use Model\Repository\FeedbackRepository;
 
 define('DS', DIRECTORY_SEPARATOR);
-define('ROOT_DIR', __DIR__ . DS . '..' . DS);
-define('VIEW_DIR', ROOT_DIR . 'View');
+define('ROOT_DIR', __DIR__ . DS . '..');
+define('VIEW_DIR', ROOT_DIR . DS . 'View');
 
-$PDOPASS = "PdoPass.php";   // имя файла с альтер настройками подключения к базе данных PDO
+$PDOPASS = ROOT_DIR . DS . "Security" . DS ."PdoPass.php";   // имя файла с альтер настройками подключения к базе данных PDO
 
 if (file_exists($PDOPASS))      // если есть сторонний файл с настройками подключения к базе данных то используется он
 {                               // а если его нет то настройки устанавливаются здесь
     include_once $PDOPASS;
 
 }else{
-        $DSN = 'mysql:host=127.0.0.1;dbname=mvc1';
-        $USER = 'root';
-        $PASSWORD = null;
+//        $DSN = 'mysql:host=127.0.0.1;dbname=mvc1';
+//        $USER = 'root';
+//        $PASSWORD = null;
 }
 
 spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом
                                                                                     // и неймспейс совпадают
    {
-    require ROOT_DIR . $className . '.php';
+    require ROOT_DIR . DS . $className . '.php';
    });
 
 $request = new Request($_GET, $_POST);    // отсыл суп.глоб.масс. в private св-ва и обработка if null
@@ -33,6 +34,7 @@ $router = new Router(); // создание роутера для использ
                             // функции. Это dependency injection pattern.
 
 $pdo = new \PDO($DSN, $USER, $PASSWORD);
+$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 $controller = $request->get('controller', 'default');   // get from private + default if null
 $action = $request->get('action', 'index');     // -||-
@@ -40,15 +42,18 @@ $action = $request->get('action', 'index');     // -||-
 $controller = 'Controller\\' . ucfirst($controller . 'Controller');     // изменяем назв. контроллера на имя файла
 $action .= 'Action';        // экшена  -||-
 
+$feedbackRepository = new FeedbackRepository();
+
 try {
-    if (!file_exists(ROOT_DIR . $controller . '.php'))     // проверка на существование файла + расширение
+    if (!file_exists(ROOT_DIR . DS . $controller . '.php'))     // проверка на существование файла + расширение
     {
         throw new \Exception("{$controller} -  not found");
     }
 
-    $controller = (new $controller())        //
+    $controller = (new $controller())
                     ->setRouter($router)
                     ->setPdo($pdo)
+                    ->setFeedbackRepository($feedbackRepository)
     ;
 
     if (!method_exists($controller, $action))        // -||- метода

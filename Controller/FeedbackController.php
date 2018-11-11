@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Framework\Controller;
+use Model\Entity\Feedback;
 use Model\Form\FeedbackForm;
 use Framework\Request;
 
@@ -20,7 +21,16 @@ class FeedbackController extends Controller
         {
             if ($form->isValid())
             {
-//                $this->pdo
+                $feedback =(new Feedback())
+                    ->setName($form->name)
+                    ->setEmail($form->email)
+                    ->setMessage($form->message)
+                ;
+
+                $this->feedbackRepository->save($feedback);
+
+                //                $this->pdo
+
 
                 $this->router->redirect('/1');
             }
