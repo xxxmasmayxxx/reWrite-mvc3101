@@ -5,7 +5,8 @@ use Controller\ExeptionController;
 use Framework\Router;
 
 define('DS', DIRECTORY_SEPARATOR);
-define('VIEW_DIR', 'View');
+define('ROOT_DIR', __DIR__ . DS . '..' . DS);
+define('VIEW_DIR', ROOT_DIR . 'View');
 
 $PDOPASS = "PdoPass.php";   // имя файла с альтер настройками подключения к базе данных PDO
 
@@ -22,7 +23,7 @@ if (file_exists($PDOPASS))      // если есть сторонний файл
 spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом
                                                                                     // и неймспейс совпадают
    {
-    require $className . '.php';
+    require ROOT_DIR . $className . '.php';
    });
 
 $request = new Request($_GET, $_POST);    // отсыл суп.глоб.масс. в private св-ва и обработка if null
@@ -33,14 +34,6 @@ $router = new Router(); // создание роутера для использ
 
 $pdo = new \PDO($DSN, $USER, $PASSWORD);
 
-
-
-\Framework\Registry::set('router', $router);
-\Framework\Registry::set('pdo', $pdo);
-
-
-
-
 $controller = $request->get('controller', 'default');   // get from private + default if null
 $action = $request->get('action', 'index');     // -||-
 
@@ -48,7 +41,7 @@ $controller = 'Controller\\' . ucfirst($controller . 'Controller');     // из�
 $action .= 'Action';        // экшена  -||-
 
 try {
-    if (!file_exists($controller . '.php'))     // проверка на существование файла + расширение
+    if (!file_exists(ROOT_DIR . $controller . '.php'))     // проверка на существование файла + расширение
     {
         throw new \Exception("{$controller} -  not found");
     }

@@ -1,0 +1,88 @@
+#DirectoryIndex web
+
+RewriteEngine On
+
+RewriteRule ^(.*)$ web/$1 [L,QSA]
+
+#Командой RewriteEngine On мы включаем модуль mod_rewrite,
+#а с помощью RewriteRule задаём правила преобразования адресов.
+#RewriteRule просто преобразует входной URL по порядку в соответствии
+#с регулярными выражениями. В конце каждого правила можно задать флаги
+#для указания поведения mod_rewrite при обработке URL
+
+#abc…	Letters
+#123…	Digits
+#\d	Any Digit
+#\D	Any Non-digit character
+#.	Any Character
+#\.	Period
+#[abc]	Only a, b, or c
+#[^abc]	Not a, b, nor c
+#[a-z]	Characters a to z
+#[0-9]	Numbers 0 to 9
+#\w	Any Alphanumeric character
+#\W	Any Non-alphanumeric character
+#{m}	m Repetitions
+#{m,n}	m to n Repetitions
+#*	Zero or more repetitions
+#+	One or more repetitions
+#?	Optional character
+#\s	Any Whitespace
+#\S	Any Non-whitespace character
+#^…$	Starts and ends
+#(…)	Capture Group
+#(a(bc))	Capture Sub-group
+#(.*)	Capture all
+#(abc|def)	Matches abc or def
+
+#The $1 is basically the captured contents of everything from the start and the end of the string. In other words,
+#$1 = (.*).
+#
+#In your rewrite, the ^ signifies the start of the string, the (.*) says to match anything, and the $ signifies the
+#end of the string. So, basically, it's saying grab everything from the start to the end of the string and assign that
+#value to $1.
+#
+#So if I type in www.example.com/tacos-are-good, then $1 = "tacos-are-good". So your end rewrite will actually be
+#www.example.com/index.php/tacos-are-good.
+
+#Флаг  Описание
+#———————————————————————————————————————————————————————————————————————————————
+#[C]   Chain — объединяет несколько правил в цепочку. Если первое правило
+#      цепочки не срабатывает, то вся цепочка игнорируется.
+#
+#[F]   Forbidden — возвращает ошибку 403 Forbidden (запрещено).
+#
+#[G]   Gone — возвращает ошибку 410 Gone (удалён).
+#
+#[L]   Last — останавливает процесс преобразования, и текущая ссылка
+#      считается окончательной.
+#
+#[N]   Next — запускает процесс преобразования с первого по порядку правила.
+#
+#[NS]  NoSubreq — разрешает срабатывание правила только для настоящих
+#      запросов, игнорируя подзапросы.
+#
+#[NC]  NoCase — отключает проверку регистра символов.
+#
+#[P]   Proxy — даёт команду Apache выполнить подзапрос к указанной странице
+#      с использованием программного модуля mod_proxy, при этом пользователь
+#      ничего не узнает об этом подзапросе. Если модуль mod_proxy отсутствует,
+#      то произойдет ошибка.
+#
+#[PT]  PassThrough — останавливает процесс преобразования и передает
+#      полученную новую ссылку дальше по цепочке.
+#
+#[QSA] Qsappend — добавляет исходные параметры запроса (Query String)
+#      к замене. Если замена не включает в себя новые параметры запроса,
+#      то исходные параметры запроса добавляются автоматически. Если же
+#      включает, то без флага QSA исходные параметры запроса будут утеряны.
+#
+#[R]   Redirect — останавливает процесс преобразования и возвращает
+#      результат браузеру клиента как редирект на новую страницу.
+#      По умолчанию передаётся HTTP-код 302 Moved Temporarily (перемещенно
+#      временно), но его можно изменить путём присвоения нового статуса
+#      через знак равенства [R=301]. В этом случае будет передан HTTP-код
+#      301 Moved Permanently (перемещено навсегда).
+#
+#[S]   Skip — пропускает следующее правило, если текущее правило сработало.
+#      Можно указать количество последующих игнорируемых правил [S=2].

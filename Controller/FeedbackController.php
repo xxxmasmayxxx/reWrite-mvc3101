@@ -12,10 +12,6 @@ class FeedbackController extends Controller
     public function contactAction(Request $request)
     {
 
-
-      var_dump(\Framework\Registry::get('router'));
-
-
         $form = new FeedbackForm( $request->post('name'),
                                         $request->post('email'),
                                         $request->post('message')

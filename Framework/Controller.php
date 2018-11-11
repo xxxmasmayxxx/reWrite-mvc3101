@@ -29,7 +29,7 @@ protected $pdo;
         $folderClass = strtolower(str_replace(['Controller', '\\'], '', $class)); // убираем неймспейс и понижаем
                                                                                             // заглавные буквы
 
-        $path = VIEW_DIR . DIRECTORY_SEPARATOR . $folderClass . DIRECTORY_SEPARATOR . $view;  // склеиваем путь
+        $path = VIEW_DIR . DS . $folderClass . DS . $view;  // склеиваем путь
 
         if (!file_exists($path))        // проверка на существование вьюшки
         {
