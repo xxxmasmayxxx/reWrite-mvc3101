@@ -1,9 +1,10 @@
-<?php
+<?php //todo: fix branches git, look app working
 
 use Framework\Request;
 use Controller\ExeptionController;
 use Framework\Router;
 use Model\Repository\FeedbackRepository;
+use Framework\Session;
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT_DIR', __DIR__ . DS . '..');
@@ -16,9 +17,9 @@ if (file_exists($PDOPASS))      // если есть сторонний файл
     include_once $PDOPASS;
 
 }else{
-//        $DSN = 'mysql:host=127.0.0.1;dbname=mvc1';
-//        $USER = 'root';
-//        $PASSWORD = null;
+        $DSN = 'mysql:host=127.0.0.1;dbname=mvc1';
+        $USER = 'root';
+        $PASSWORD = null;
 }
 
 spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом
@@ -36,13 +37,15 @@ $router = new Router(); // создание роутера для использ
 $pdo = new \PDO($DSN, $USER, $PASSWORD);
 $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
+$session = (new Session())->start();
+
 $controller = $request->get('controller', 'default');   // get from private + default if null
 $action = $request->get('action', 'index');     // -||-
 
 $controller = 'Controller\\' . ucfirst($controller . 'Controller');     // изменяем назв. контроллера на имя файла
 $action .= 'Action';        // экшена  -||-
 
-$feedbackRepository = new FeedbackRepository();
+$feedbackRepository = (new FeedbackRepository())->setPdo($pdo); //PDO сетится отдельно от контроллеров
 
 try {
     if (!file_exists(ROOT_DIR . DS . $controller . '.php'))     // проверка на существование файла + расширение
@@ -50,22 +53,23 @@ try {
         throw new \Exception("{$controller} -  not found");
     }
 
-    $controller = (new $controller())
+    $controller = (new $controller())           // все нужные инструменты сетятся в родительский контроллер
                     ->setRouter($router)
-                    ->setPdo($pdo)
+                    ->setPDO($pdo)
                     ->setFeedbackRepository($feedbackRepository)
+                    ->setSession($session)
     ;
 
-    if (!method_exists($controller, $action))        // -||- метода
+    if (!method_exists($controller, $action))        // проверка на существование метода
     {
         throw new \Exception("{$action} -  not found");
     }
 
     $content = $controller->$action($request);      // переменная для сбора и передачи контента
 
-} catch (\Exception $e){
+} catch (\Exception $e){                            // ловим все ошибки
 
-            $ec = new ExeptionController();
+            $ec = new ExeptionController();         // через свой контроллер выводим их
             $content = $ec->errorAction($e);
     }
 

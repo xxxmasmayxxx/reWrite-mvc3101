@@ -13,10 +13,12 @@ class FeedbackController extends Controller
     public function contactAction(Request $request)
     {
 
-        $form = new FeedbackForm( $request->post('name'),
-                                        $request->post('email'),
-                                        $request->post('message')
-                                       );
+        $form = new FeedbackForm(
+            $request->post('name'),
+            $request->post('email'),
+            $request->post('message')
+        );
+
         if ($request->isPost())
         {
             if ($form->isValid())
@@ -28,11 +30,8 @@ class FeedbackController extends Controller
                 ;
 
                 $this->feedbackRepository->save($feedback);
-
-                //                $this->pdo
-
-
-                $this->router->redirect('/1');
+                $this->session->setFlash('Feedback saved');
+                $this->router->redirect('/1/index.php?controller=feedback&action=contact');
             }
         }
 

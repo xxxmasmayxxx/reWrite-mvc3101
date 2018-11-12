@@ -14,6 +14,8 @@ protected $pdo;
 
 protected $feedbackRepository;
 
+protected $session;
+
     public function setRouter(Router $router)
     {
         $this->router = $router;
@@ -30,6 +32,13 @@ protected $feedbackRepository;
     public function setFeedbackRepository(FeedbackRepository $feedbackRepository)
     {
         $this->feedbackRepository = $feedbackRepository;
+
+        return $this;
+    }
+
+    public function setSession(Session $session)
+    {
+        $this->session = $session;
 
         return $this;
     }
