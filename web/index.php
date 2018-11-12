@@ -9,6 +9,7 @@ use Framework\Session;
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT_DIR', __DIR__ . DS . '..');
 define('VIEW_DIR', ROOT_DIR . DS . 'View');
+define('CONFIG_DIR', ROOT_DIR . DS . 'config');
 
 $PDOPASS = ROOT_DIR . DS . "Security" . DS ."PdoPass.php";   // имя файла с альтер настройками подключения к базе данных PDO
 
@@ -28,8 +29,10 @@ spl_autoload_register(function ($className)     //автолоадинг раб�
     require ROOT_DIR . DS . $className . '.php';
    });
 
+$routes = require CONFIG_DIR . DS .'routes.php';
+
 $request = new Request($_GET, $_POST);    // отсыл суп.глоб.масс. в private св-ва и обработка if null
-$router = new Router(); // создание роутера для использования переадресации в классах
+$router = new Router($routes); // создание роутера для использования переадресации в классах
                             // (request и router) пробрасываются в классы разными способами, request через св-ва
                             // функции а router через родительский класс но в родительский подается тоже через св-во
                             // функции. Это dependency injection pattern.
