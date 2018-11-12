@@ -4,18 +4,27 @@ return [
     'default' => [
         'controller' => 'DefaultController',
         'action' => 'indexAction',
-        'path' => '/1/'
+        'pattern' => '/1/'
     ],
 
     'book_list' => [
         'controller' => 'BookController',
         'action' => 'indexAction',
-        'path' => '/1/books'
+        'pattern' => '/1/books'
+    ],
+
+    'book_page' => [
+        'controller' => 'BookController',
+        'action' => 'indexAction',
+        'pattern' => '/1/books/{id}',
+        'parameters' => [
+            'id' => '[0-9]+'
+        ]
     ],
 
     'feedback' => [
         'controller' => 'FeedbackController',
         'action' => 'contactAction',
-        'path' => '/1/feedback'
+        'pattern' => '/1/feedback'
     ]
 ];
