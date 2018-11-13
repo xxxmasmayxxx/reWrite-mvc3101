@@ -53,6 +53,30 @@ class Router
             }
 
         }
+
+            throw new \Exception('Page not found', 404);
+    }
+
+    private function getCurrentRouteAttribute($key)
+    {
+//        if(!$this->curentRoute)
+//        {
+//            return null;
+//        }
+//        
+        return $this->curentRoute[$key] ?? null;
+
+    }
+
+    public function getCurrentController()
+    {
+        return $this->getCurrentRouteAttribute('controller');
+    }
+
+
+    public function getCurrentAction()
+    {
+        return $this->getCurrentRouteAttribute('action');
     }
 
     public function redirect($to)
