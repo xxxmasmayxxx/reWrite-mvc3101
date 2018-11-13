@@ -5,7 +5,9 @@ namespace Framework;
 class Request
 {
     private $get = [];
+
     private $post = [];
+
     private $server = [];
 
         public function __construct(array $get = [], array $post = [], array $server = [])
@@ -33,17 +35,19 @@ class Request
     public function getUrl()
     {
         $url = $this->server('REQUEST_URI');
+
                 if (!$url){
+
                     return null;
                 }
 
             $url = explode('?', $url);
 
-                return $url[0];
-            }
+            return $url[0];
+    }
 
     public function isPost()
     {
         return (bool) $this->post;
-        }
+    }
 }

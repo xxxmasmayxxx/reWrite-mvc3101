@@ -23,6 +23,9 @@ if (file_exists($PDOPASS))      // если есть сторонний файл
         $PASSWORD = null;
 }
 
+$pdo = new \PDO($DSN, $USER, $PASSWORD);
+$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
 spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом
                                                                                     // и неймспейс совпадают
    {
@@ -37,17 +40,16 @@ $router = new Router($routes); // создание роутера для исп�
                             // функции а router через родительский класс но в родительский подается тоже через св-во
                             // функции. Это dependency injection pattern.
 
-$pdo = new \PDO($DSN, $USER, $PASSWORD);
-$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
 $session = (new Session())->start();
-
-$controller = $router->getCurrentController();   // получение контроллера с помощю св-тв класса
-$action = $router->getCurrentAction();     // -||- экшена
 
 $feedbackRepository = (new FeedbackRepository())->setPdo($pdo); //PDO для формы сетится отдельно от контроллеров
 
 try {
+
+    $router->match($request);
+    $controller = $router->getCurrentController();   // получение контроллера с помощю св-тв класса
+    $action = $router->getCurrentAction();     // -||- экшена
+
     if (!file_exists(ROOT_DIR . DS . $controller . '.php'))     // проверка на существование файла + расширение
     {
         throw new \Exception("{$controller} -  not found");

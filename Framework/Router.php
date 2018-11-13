@@ -9,7 +9,7 @@ class Router
 
     private $routes;
 
-    private $curentRoute;
+    private $currentRoute;
 
     public function __construct(array $routes)
     {
@@ -18,36 +18,36 @@ class Router
 
     public function match(Request $request)
     {
-        $url =$request->getUrl();
+        $url = $request->getUrl();
 
         $routes = $this->routes;
 
         foreach ($routes as $route)
         {
-        $pattren = $route['pattern'];
+        $pattern = $route['pattern'];
 
-            if(!$route['parameters'])
+            if(!empty($route['parameters']))
             {
                 foreach ($route['parameters'] as $name => $regex)
                 {
-                    $pattren = str_replace('{' . $name . '}', '{' . $regex . '}', $pattren);
+                    $pattern = str_replace('{' . $name . '}', '{' . $regex . '}', $pattern);
                 }
             }
 
-         $pattren = '@^' . $pattren . '$@';
+            $pattern = '@^' . $pattern . '$@';
 
-            if(preg_match($pattren, $url, $matches))
+            if(preg_match($pattern, $url, $matches))
             {
                 array_shift($matches);
 
                     if(!empty($route['parameters']))
                     {
-                        $resault = array_combine(array_keys($route['parameters']), $matches);
+                        $result = array_combine(array_keys($route['parameters']), $matches);
 
-                        $request->mrgeGetWithArray($resault);
+                        $request->mrgeGetWithArray($result);
                     }
 
-                    $this->curentRoute = $route;
+                    $this->currentRoute = $route;
 
                     return;
             }
@@ -63,9 +63,11 @@ class Router
 //        {
 //            return null;
 //        }
-//        
-        return $this->curentRoute[$key] ?? null;
+//
+//        return $this->curentRoute[$key];
 
+        return $this->curentRoute[$key] ?? null;
+;
     }
 
     public function getCurrentController()
