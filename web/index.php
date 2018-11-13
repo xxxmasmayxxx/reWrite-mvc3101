@@ -42,13 +42,10 @@ $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 $session = (new Session())->start();
 
-$controller = $request->get('controller', 'default');   // get from private + default if null
-$action = $request->get('action', 'index');     // -||-
+$controller = $router->getCurrentController();   // получение контроллера с помощю св-тв класса
+$action = $router->getCurrentAction();     // -||- экшена
 
-$controller = 'Controller\\' . ucfirst($controller . 'Controller');     // изменяем назв. контроллера на имя файла
-$action .= 'Action';        // экшена  -||-
-
-$feedbackRepository = (new FeedbackRepository())->setPdo($pdo); //PDO сетится отдельно от контроллеров
+$feedbackRepository = (new FeedbackRepository())->setPdo($pdo); //PDO для формы сетится отдельно от контроллеров
 
 try {
     if (!file_exists(ROOT_DIR . DS . $controller . '.php'))     // проверка на существование файла + расширение
@@ -56,7 +53,7 @@ try {
         throw new \Exception("{$controller} -  not found");
     }
 
-    $controller = (new $controller())           // все нужные инструменты сетятся в родительский контроллер
+    $controller = (new $controller())           // все нужные инструменты сетятся в экз. класса контроллера
                     ->setRouter($router)
                     ->setPDO($pdo)
                     ->setFeedbackRepository($feedbackRepository)
