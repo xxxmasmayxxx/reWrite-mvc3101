@@ -15,7 +15,7 @@ return [
 
     'book_page' => [
         'controller' => 'BookController',
-        'action' => 'indexAction',
+        'action' => 'showAction',
         'pattern' => '/1/books/{id}',
         'parameters' => [
             'id' => '[0-9]+'

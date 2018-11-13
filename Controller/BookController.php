@@ -15,4 +15,8 @@ class BookController extends Controller
         ]);
     }
 
+    public function showAction(Request $request)
+    {
+        return $request->get('id');
+    }
 }
