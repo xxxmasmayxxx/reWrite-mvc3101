@@ -44,7 +44,7 @@ class Router
                     {
                         $result = array_combine(array_keys($route['parameters']), $matches);
 
-                        $request->mrgeGetWithArray($result);
+                        $request->mergeGetWithArray($result);
                     }
 
                     $this->currentRoute = $route;
