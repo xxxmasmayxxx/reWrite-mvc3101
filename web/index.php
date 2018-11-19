@@ -1,4 +1,4 @@
-<?php
+<?php //todo: think about injection trait and implementation interface
 
 use Framework\Request;
 use Controller\ExeptionController;

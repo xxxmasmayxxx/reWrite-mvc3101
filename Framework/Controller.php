@@ -10,11 +10,13 @@ class Controller
 {
 protected $router;
 
-protected $pdo;
-
 protected $feedbackRepository;
 
 protected $session;
+
+protected $logger;
+
+    use PdoTrait;
 
     public function setRouter(Router $router)
     {
@@ -23,12 +25,6 @@ protected $session;
         return $this;
 }
 
-    public function setPdo(\PDO $pdo)
-    {
-        $this->pdo = $pdo;
-
-        return $this;
-}
     public function setFeedbackRepository(FeedbackRepository $feedbackRepository)
     {
         $this->feedbackRepository = $feedbackRepository;

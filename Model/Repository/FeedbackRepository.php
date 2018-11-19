@@ -3,19 +3,12 @@
 
 namespace Model\Repository;
 
-use Framework\Controller;
+use Framework\PdoTrait;
 use Model\Entity\Feedback;
 
 class FeedbackRepository
 {
-    private $pdo;
-
-    public function setPdo(\PDO $pdo)
-    {
-        $this->pdo = $pdo;
-
-        return $this;
-    }
+   use PdoTrait;
 
     public function save(Feedback $feedback)
     {
