@@ -59,15 +59,7 @@ class Router
 
     private function getCurrentRouteAttribute($key)
     {
-//        if(!$this->curentRoute)
-//        {
-//            return null;
-//        }
-//
-//        return $this->curentRoute[$key];
-
-        return $this->curentRoute[$key] ?? null;
-;
+        return $this->currentRoute[$key] ?? null;
     }
 
     public function getCurrentController()

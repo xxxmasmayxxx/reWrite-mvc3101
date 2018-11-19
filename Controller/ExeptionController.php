@@ -25,7 +25,7 @@ class ExeptionController extends Controller
              'errorMessage' => $errorMessage
          ]);
      }
-         if (stripos($errorMessage, 'controller')) {        // -||-
+         if (stripos($errorMessage, 'controller')) {        // -||- controller
 
              return $this->render('index.phtml', [
                  'type' => '400',

@@ -60,12 +60,13 @@ try {
     $router->match($request);
     $controller = $router->getCurrentController();   // получение контроллера с помощю св-тв класса
     $action = $router->getCurrentAction();     // -||- экшена
-
-    if (!file_exists(ROOT_DIR . DS . $controller . '.php'))     // проверка на существование файла + расширение
+;
+    if (!file_exists(ROOT_DIR . DS . 'Controller' . DS .  $controller . '.php'))     // проверка на существование файла + расширение
     {
         throw new \Exception("{$controller} -  not found");
     }
 
+    $controller = '\\Controller\\' . $controller;
     $controller = (new $controller())           // все нужные инструменты сетятся в экз. класса контроллера
                     ->setRouter($router)
                     ->setPDO($pdo)
