@@ -55,8 +55,11 @@ protected $logger;
         $vars = extract($assoc);
 
         ob_start();     // буферизация без которой require вылезет в верху layout
+        require $path;
+        $content = ob_get_clean();
 
-        require ($path);
+        ob_start();     // еще одна буферезвция для окончательной вьюшки
+        require VIEW_DIR . DS . 'layout.phtml';
 
         return ob_get_clean(); // возврат и закрытие буфера
     }

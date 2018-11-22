@@ -7,6 +7,12 @@ return [
         'pattern' => '/1/'
     ],
 
+    'json' => [
+        'controller' => 'DefaultController',
+        'action' => 'jsonAction',
+        'pattern' => '/1/json'
+    ],
+
     'book_list' => [
         'controller' => 'BookController',
         'action' => 'indexAction',

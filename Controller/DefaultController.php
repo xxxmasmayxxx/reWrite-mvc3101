@@ -12,4 +12,11 @@ class DefaultController extends Controller
     {
         return $this->render('index.phtml');
     }
+
+
+    public function jsonAction(Request $request)
+    {
+        header('content-type: application/json');
+        return json_encode(['a'=>1, 'b'=>2]);
+    }
 }

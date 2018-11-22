@@ -1,4 +1,5 @@
-<?php //todo: think about injection trait and implementation interface
+<?php //todo: think about implementation interface
+        // fix exceptionController
 
 use Framework\Request;
 use Controller\ExeptionController;
@@ -13,11 +14,12 @@ define('VIEW_DIR', ROOT_DIR . DS . 'View');
 define('CONFIG_DIR', ROOT_DIR . DS . 'config');
 define('LOG_FILE', ROOT_DIR . DS . 'log' . DS . 'log.txt');
 
-spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом
-    // и неймспейс совпадают
-{
-    require ROOT_DIR . DS . $className . '.php';
-});
+    spl_autoload_register(function ($className)     //автолоадинг работает только если название паки с файлом
+        // и неймспейс совпадают
+    {
+        require ROOT_DIR . DS . $className . '.php';
+    });
+
 
 $logger = new Logger(LOG_FILE);
 
@@ -84,11 +86,11 @@ try {
 } catch (\Exception $e){                            // ловим все ошибки
 
             $ec = new ExeptionController();         // через свой контроллер выводим их
-            $content = $ec->errorAction($e);
+            $ec = (new ExeptionController())->errorAction($e);
 
             $logger->log($e);
 }
 
 
 
-require VIEW_DIR . DS . 'layout.phtml';        // выкладываем все в вьюшку
+echo $content;       // выкладываем что собралось
